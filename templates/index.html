@@ -39,8 +39,8 @@
             {% for post in posts %}
                 <div class="col-md-6 mb-4">
                     <div class="card">
-                        {% if post.image %}
-                            <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="card-img-top" alt="{{ post.title }}">
+                        {% if post.image and post.image.url %}
+                            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
                         {% else %}
                             <img src="{{ url_for('static', filename='images/default_post_image.png') }}" class="card-img-top" alt="Gambar Default Blog">
                         {% endif %}
