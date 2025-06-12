@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda Blog{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">
+        {% if query %}
+            Hasil Pencarian untuk "{{ query }}"
+        {% elif selected_category %}
+            Postingan dalam Kategori "{{ selected_category }}"
+        {% else %}
+            Postingan Terbaru
+        {% endif %}
+    </h1>
+    
+    {# FILTER KATEGORI DI SINI #}
+    {% if all_categories %}
+        <div class="mb-4">
+            <h5>Filter berdasarkan Kategori:</h5>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('index', q=query) }}" class="btn btn-outline-primary {% if not selected_category %}active{% endif %} rounded-pill">Semua</a>
+                {% for cat in all_categories %}
+                    <a href="{{ url_for('index', category=cat, q=query) }}" class="btn btn-outline-primary {% if selected_category == cat %}active{% endif %} rounded-pill">{{ cat }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if query and posts|length == 0 %}
+        <div class="alert alert-info" role="alert">
+            Tidak ada postingan yang ditemukan dengan kata kunci "{{ query }}".
+        </div>
+    {% elif selected_category and posts|length == 0 %}
+        <div class="alert alert-info" role="alert">
+            Tidak ada postingan dalam kategori "{{ selected_category }}".
+        </div>
+    {% elif posts %}
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        {% if post.image %}
+                            <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="card-img-top" alt="{{ post.title }}">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default_post_image.png') }}" class="card-img-top" alt="Gambar Default Blog">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ url_for('post_detail', id=post._id) }}">{{ post.title }}</a></h5>
+                            <p class="card-text"><small class="text-muted">Oleh {{ post.author }} pada {{ post.created_at.strftime('%d %B %Y') }}</small></p>
+                            <p class="card-text">{{ post.content[:150] }}...</p>
+
+                            {# TAMPILKAN KATEGORI/TAG DI SINI #}
+                            {% if post.categories %}
+                                <div class="mt-2 mb-3">
+                                    {% for cat in post.categories %}
+                                        <a href="{{ url_for('index', category=cat) }}" class="badge rounded-pill bg-info text-white me-1">{{ cat }}</a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="card-actions">
+                                <a href="{{ url_for('post_detail', id=post._id) }}" class="btn btn-primary btn-sm">Baca Selengkapnya</a>
+                                {% if session.logged_in %}
+                                    <a href="{{ url_for('edit_post', id=post._id) }}" class="btn btn-secondary btn-sm ms-2">Edit</a>
+                                    <form action="{{ url_for('delete_post', id=post._id) }}" method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">Hapus</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# BAGIAN PAGINATION #}
+        {% if total_pages > 1 %}
+            <nav aria-label="Page navigation example" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                        <a class="page-link" href="{{ url_for('index', page=page-1, q=query, category=selected_category) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% for p in range(1, total_pages + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('index', page=p, q=query, category=selected_category) }}">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                        <a class="page-link" href="{{ url_for('index', page=page+1, q=query, category=selected_category) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+
+    {% else %}
+        <div class="col-12">
+            <p>Belum ada postingan. Ayo buat yang pertama!</p>
+            {% if session.logged_in %}
+                <a href="{{ url_for('new_post') }}" class="btn btn-success">Buat Postingan Baru</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

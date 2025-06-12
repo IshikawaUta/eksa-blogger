@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Postingan{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Edit Postingan</h1>
+    <form action="{{ url_for('edit_post', id=post._id) }}" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Judul</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Konten</label>
+            <textarea class="form-control" id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">Penulis</label>
+            <input type="text" class="form-control" id="author" name="author" value="{{ post.author }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="categories" class="form-label">Kategori (pisahkan dengan koma)</label>
+            <input type="text" class="form-control" id="categories" name="categories" value="{{ categories if categories }}">
+            <small class="form-text text-muted">Contoh: Teknologi, Tutorial, Umum</small>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Ganti Gambar (Kosongkan jika tidak ingin mengubah)</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/gif">
+            <small class="form-text text-muted">Format yang diizinkan: PNG, JPG, JPEG, GIF.</small>
+            {% if post.image %}
+                <div class="mt-2">
+                    <p>Gambar Saat Ini:</p>
+                    <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="img-fluid" style="max-width: 200px;" alt="Gambar Postingan">
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Perbarui Postingan</button>
+        <a href="{{ url_for('post_detail', id=post._id) }}" class="btn btn-secondary ms-2">Batal</a>
+    </form>
+{% endblock %}

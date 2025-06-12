@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-3">{{ post.title }}</h1>
+    <p class="text-muted">Oleh {{ post.author }} pada {{ post.created_at.strftime('%d %B %Y') }}</p>
+    
+    {# TAMPILKAN KATEGORI/TAG DI DETAIL POSTINGAN #}
+    {% if post.categories %}
+        <div class="mb-3">
+            {% for cat in post.categories %}
+                <a href="{{ url_for('index', category=cat) }}" class="badge rounded-pill bg-info text-white me-1">{{ cat }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if post.image %}
+        <div class="mb-4 text-center">
+            <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="img-fluid rounded" alt="{{ post.title }}" style="max-height: 400px; object-fit: contain;">
+        </div>
+    {% endif %}
+
+    <div class="card card-body mb-4">
+        <p class="card-text">{{ post.content }}</p>
+    </div>
+    {% if session.logged_in %}
+        <a href="{{ url_for('edit_post', id=post._id) }}" class="btn btn-secondary">Edit Postingan</a>
+        <form action="{{ url_for('delete_post', id=post._id) }}" method="POST" class="d-inline ms-2">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">Hapus Postingan</button>
+        </form>
+    {% endif %}
+    <a href="{{ url_for('index') }}" class="btn btn-outline-primary ms-2">Kembali ke Beranda</a>
+{% endblock %}

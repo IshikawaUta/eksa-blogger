@@ -1,0 +1,408 @@
+/*
+ * File: style.css
+ * Deskripsi: Mengandung semua styling CSS untuk blog, termasuk tema terang/gelap,
+ * font kustom (Quicksand), styling card, tombol, form, dan pagination.
+ */
+
+/* --- Import font Quicksand dari Google Fonts --- */
+/* Pastikan link ini sudah ada di base.html. Jika tidak ada, tambahkan baris berikut di base.html:
+   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+   Jika sudah ada di base.html, baris @import ini bisa dihapus untuk menghindari duplikasi.
+*/
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap'); */
+
+
+/* --- Variabel Warna (Mode Terang Default) --- */
+:root {
+    --bg-primary: #e0f2f7; /* Latar belakang body */
+    --text-color: #34495e; /* Warna teks utama */
+    --navbar-gradient-start: #4facfe;
+    --navbar-gradient-end: #00f2fe;
+    --navbar-text-color: #ffffff;
+    --navbar-text-hover-color: #e3f2fd; /* Biru sangat muda */
+    --card-bg: #ffffff;
+    --card-shadow-light: rgba(0,0,0,.08);
+    --card-shadow-dark: rgba(0,0,0,.15);
+    --card-hover-shadow: rgba(0,0,0,.25);
+    --link-color: #2196f3; /* Biru standar cerah */
+    --link-hover-color: #0d47a1; /* Biru lebih gelap saat hover */
+    --small-text-color: #78909c; /* Abu-abu lembut untuk info penulis/tanggal */
+    --input-border-color: #b3e5fc; /* Border input yang lebih terang */
+    --input-focus-border-color: #2196f3; /* Biru utama saat fokus */
+    --btn-primary-gradient-start: #4facfe;
+    --btn-primary-gradient-end: #00f2fe;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: #607d8b; /* Biru keabu-abuan untuk sekunder */
+    --btn-secondary-hover-bg: #455a64;
+    --btn-danger-bg: #e57373; /* Warna merah muda lembut */
+    --btn-danger-hover-bg: #d32f2f;
+    --btn-success-bg: #66bb6a; /* Warna hijau sedang */
+    --btn-success-hover-bg: #43a047;
+    --alert-success-bg: #a7d9b5; /* Hijau lebih cerah */
+    --alert-success-border: #8bc34a;
+    --alert-success-text: #1b5e20;
+    --alert-danger-bg: #ffcdd2; /* Merah lebih cerah */
+    --alert-danger-border: #ef5350;
+    --alert-danger-text: #b71c1c;
+    --alert-info-bg: #b3e5fc; /* Biru lebih cerah */
+    --alert-info-border: #03a9f4;
+    --alert-info-text: #01579b;
+    --alert-warning-bg: #ffe082; /* Kuning lebih cerah */
+    --alert-warning-border: #ffc107;
+    --alert-warning-text: #ff6f00;
+}
+
+/* --- Variabel Warna (Mode Gelap) --- */
+body.dark-mode {
+    --bg-primary: #121212; /* Latar belakang gelap */
+    --text-color: #e0e0e0; /* Warna teks terang utama */
+    --navbar-gradient-start: #2c3e50; /* Gradien gelap */
+    --navbar-gradient-end: #34495e;
+    --navbar-text-color: #e0e0e0;
+    --navbar-text-hover-color: #bbdefb;
+    --card-bg: #1e1e1e;
+    --card-shadow-light: rgba(0,0,0,.2);
+    --card-shadow-dark: rgba(0,0,0,.3);
+    --card-hover-shadow: rgba(0,0,0,.5);
+    --link-color: #bb86fc; /* Warna link cerah untuk dark mode (ungu) */
+    --link-hover-color: #9c27b0;
+    --small-text-color: #bdbdbd; /* Lebih terang agar terlihat di mode gelap */
+    --input-border-color: #3a3a3a;
+    --input-focus-border-color: #bb86fc;
+    --btn-primary-gradient-start: #6200ee; /* Gradien tombol utama gelap */
+    --btn-primary-gradient-end: #3700b3;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: #424242;
+    --btn-secondary-hover-bg: #616161;
+    --btn-danger-bg: #cf6679;
+    --btn-danger-hover-bg: #b00020;
+    --btn-success-bg: #03dac6;
+    --btn-success-hover-bg: #018786;
+    --alert-success-bg: #28a745;
+    --alert-success-border: #28a745;
+    --alert-success-text: #ffffff;
+    --alert-danger-bg: #dc3545;
+    --alert-danger-border: #dc3545;
+    --alert-danger-text: #ffffff;
+    --alert-info-bg: #17a2b8;
+    --alert-info-border: #17a2b8;
+    --alert-info-text: #ffffff;
+    --alert-warning-bg: #ffc107;
+    --alert-warning-border: #ffc107;
+    --alert-warning-text: #1a1a1a;
+}
+
+/* --- Styling Global --- */
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--bg-primary); /* Gunakan variabel */
+    padding-top: 56px; /* Untuk memberi ruang di bawah navbar */
+    color: var(--text-color); /* Gunakan variabel */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transisi untuk perubahan mode */
+}
+
+/* --- Navbar --- */
+.navbar {
+    background: linear-gradient(to right, var(--navbar-gradient-start), var(--navbar-gradient-end)) !important;
+    box-shadow: 0 2px 4px var(--card-shadow-light);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar-brand, .nav-link {
+    color: var(--navbar-text-color) !important;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: var(--navbar-text-hover-color) !important;
+}
+
+.btn-outline-light { /* Untuk tombol pencarian di navbar */
+    border-color: var(--navbar-text-hover-color);
+    color: var(--navbar-text-color);
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: var(--navbar-text-hover-color);
+    color: var(--navbar-gradient-start);
+}
+
+/* --- Kontainer Utama --- */
+.container {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+/* --- Card Postingan --- */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--card-shadow-dark);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease;
+    background-color: var(--card-bg);
+    overflow: hidden; /* Penting untuk gambar yang membulat */
+
+    /* Untuk menyamakan tinggi card */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Pastikan card mengisi tinggi kolom induk */
+}
+
+.card:hover {
+    transform: translateY(-8px); /* Geser sedikit lebih jauh ke atas saat di-hover */
+    box-shadow: 0 12px 25px var(--card-hover-shadow); /* Bayangan lebih gelap saat di-hover */
+}
+
+.card-img-top {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    max-height: 220px; /* Batasi tinggi gambar di card */
+    object-fit: cover; /* Pastikan gambar mengisi ruang tanpa distorsi */
+    width: 100%; /* Pastikan gambar memenuhi lebar card */
+    transition: transform 0.3s ease; /* Efek zoom gambar saat hover */
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05); /* Zoom in sedikit pada gambar saat card di-hover */
+}
+
+.card-body {
+    padding: 1.5rem;
+    /* Untuk card-body yang mengisi ruang */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Izinkan card-body untuk mengisi ruang yang tersedia */
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+}
+
+.card-title a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.card-title a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+}
+
+.card-text { /* Untuk paragraf deskripsi postingan */
+    color: var(--text-color); /* Pastikan teks konten card menggunakan warna teks utama */
+    transition: color 0.3s ease;
+    margin-bottom: 0.5rem; /* Sedikit jarak dengan info penulis */
+}
+
+.card-text small { /* Untuk info penulis dan tanggal */
+    color: var(--small-text-color); /* Gunakan variabel */
+    font-size: 0.85em;
+    transition: color 0.3s ease;
+    margin-bottom: 1rem; /* Jarak dengan tombol aksi */
+    display: block; /* Agar mengambil baris baru */
+}
+
+/* Pastikan kelas text-muted (dari Bootstrap) juga mengikuti tema mode gelap */
+body.dark-mode .text-muted {
+    color: var(--small-text-color) !important; /* !important untuk override Bootstrap */
+}
+
+/* --- Aksi Tombol di Card (misal: Baca Selengkapnya, Edit, Hapus) --- */
+.card-actions {
+    margin-top: auto; /* Ini akan mendorong div ini ke bagian bawah flex container */
+    padding-top: 1rem; /* Sedikit padding di atas tombol */
+}
+
+/* --- Styling Form Input (Umum) --- */
+.form-label { /* Untuk label di atas input */
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid var(--input-border-color);
+    padding: 0.75rem 1rem;
+    background-color: var(--card-bg); /* Sesuaikan dengan mode */
+    color: var(--text-color); /* Sesuaikan dengan mode */
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Styling untuk placeholder */
+.form-control::placeholder {
+    color: var(--small-text-color); /* Gunakan warna yang sama dengan teks kecil */
+    opacity: 1; /* Pastikan tidak ada opasitas yang membuatnya terlalu pudar */
+    transition: color 0.3s ease;
+}
+
+/* Aturan spesifik untuk placeholder di mode gelap (opsional, jika --small-text-color belum cukup) */
+body.dark-mode .form-control::placeholder {
+    color: #cccccc; /* Lebih terang agar terlihat di mode gelap */
+}
+
+.form-control:focus {
+    border-color: var(--input-focus-border-color);
+    /* Untuk box-shadow fokus pada form-control, kita perlu trik karena rgba() tidak bisa langsung dari variabel hex. */
+}
+
+/* Box-shadow fokus khusus untuk mode terang */
+body:not(.dark-mode) .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.25); /* Biru terang */
+}
+/* Box-shadow fokus khusus untuk mode gelap */
+body.dark-mode .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(187, 134, 252, 0.25); /* Ungu terang */
+}
+
+
+/* --- Styling Tombol --- */
+.btn-primary {
+    background: linear-gradient(to right, var(--btn-primary-gradient-start), var(--btn-primary-gradient-end));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--btn-primary-text);
+    transition: opacity 0.2s ease, background 0.3s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background-color: var(--btn-secondary-bg);
+    border-color: var(--btn-secondary-bg);
+    border-radius: 8px;
+    font-weight: 600;
+    color: #ffffff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.btn-secondary:hover {
+    background-color: var(--btn-secondary-hover-bg);
+    border-color: var(--btn-secondary-hover-bg);
+}
+
+.btn-danger {
+    background-color: var(--btn-danger-bg);
+    border-color: var(--btn-danger-bg);
+    border-radius: 8px;
+    font-weight: 600;
+    color: #ffffff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.btn-danger:hover {
+    background-color: var(--btn-danger-hover-bg);
+    border-color: var(--btn-danger-hover-bg);
+}
+
+.btn-success {
+    background-color: var(--btn-success-bg);
+    border-color: var(--btn-success-bg);
+    border-radius: 8px;
+    font-weight: 600;
+    color: #ffffff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.btn-success:hover {
+    background-color: var(--btn-success-hover-bg);
+    border-color: var(--btn-success-hover-bg);
+}
+
+.btn-outline-primary { /* Untuk tombol "Kembali ke Beranda" di detail postingan */
+    border-color: var(--link-color);
+    color: var(--link-color);
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--link-color);
+    color: #ffffff;
+}
+
+/* --- Flash Messages (Alerts) --- */
+.alert-success {
+    background-color: var(--alert-success-bg);
+    border-color: var(--alert-success-border);
+    color: var(--alert-success-text);
+    transition: all 0.3s ease;
+}
+.alert-danger {
+    background-color: var(--alert-danger-bg);
+    border-color: var(--alert-danger-border);
+    color: var(--alert-danger-text);
+    transition: all 0.3s ease;
+}
+.alert-info {
+    background-color: var(--alert-info-bg);
+    border-color: var(--alert-info-border);
+    color: var(--alert-info-text);
+    transition: all 0.3s ease;
+}
+.alert-warning {
+    background-color: var(--alert-warning-bg);
+    border-color: var(--alert-warning-border);
+    color: var(--alert-warning-text);
+    transition: all 0.3s ease;
+}
+
+/* --- Pagination --- */
+.pagination .page-item .page-link {
+    border-radius: 8px; /* Sudut membulat */
+    margin: 0 5px; /* Jarak antar item */
+    color: var(--link-color); /* Warna teks link */
+    background-color: var(--card-bg); /* Latar belakang item pagination */
+    border-color: var(--input-border-color); /* Warna border */
+    transition: all 0.3s ease;
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(to right, var(--btn-primary-gradient-start), var(--btn-primary-gradient-end));
+    border-color: var(--btn-primary-gradient-start);
+    color: var(--btn-primary-text); /* Teks putih untuk halaman aktif */
+}
+
+.pagination .page-item .page-link:hover:not(.active) {
+    background-color: var(--navbar-text-hover-color); /* Warna saat hover */
+    border-color: var(--btn-primary-gradient-start);
+    color: var(--btn-primary-gradient-start);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: var(--small-text-color) !important; /* Warna teks pudar untuk disabled */
+    background-color: var(--card-bg);
+    border-color: var(--input-border-color);
+}
+
+#scrollToTopBtn {
+    display: none; /* Sembunyikan secara default */
+    position: fixed; /* Tetap di posisi yang sama saat scroll */
+    bottom: 30px; /* Jarak dari bawah */
+    right: 30px; /* Jarak dari kanan */
+    z-index: 99; /* Pastikan di atas elemen lain */
+    border: none; /* Hilangkan border */
+    outline: none; /* Hilangkan outline fokus */
+    background: linear-gradient(to right, var(--btn-primary-gradient-start), var(--btn-primary-gradient-end)); /* Gunakan gradient yang sama dengan tombol utama */
+    color: white; /* Warna ikon putih */
+    cursor: pointer; /* Ubah kursor saat dihover */
+    padding: 15px; /* Padding */
+    border-radius: 50%; /* Bentuk lingkaran */
+    font-size: 18px; /* Ukuran ikon */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Tambah bayangan */
+    transition: background 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+}
+
+#scrollToTopBtn:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Transisi untuk mode gelap */
+body.dark-mode #scrollToTopBtn {
+    background: linear-gradient(to right, var(--btn-primary-gradient-start), var(--btn-primary-gradient-end));
+}
