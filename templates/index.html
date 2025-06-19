@@ -47,7 +47,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{ url_for('post_detail', id=post._id) }}">{{ post.title }}</a></h5>
                             <p class="card-text"><small class="text-muted">Oleh {{ post.author }} pada {{ post.created_at.strftime('%d %B %Y') }}</small></p>
-                            <p class="card-text">{{ post.content[:150] }}...</p>
+                            <p class="card-text">{{ (post.content[:150] + '...') | replace('\n', '<br>') | safe }}</p>
 
                             {# TAMPILKAN KATEGORI/TAG DI SINI #}
                             {% if post.categories %}
