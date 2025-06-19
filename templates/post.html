@@ -2,10 +2,23 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{# Tambahkan meta tag Open Graph untuk deskripsi #}
+{% block head_meta %}
+    <meta property="og:description" content="{{ post.content | striptags | truncate(150, True, '...') }}">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ request.url }}">
+    {% if post.image and post.image.url %}
+    <meta property="og:image" content="{{ post.image.url }}">
+    {% else %}
+    <meta property="og:image" content="{{ url_for('static', filename='images/default_post_image.png', _external=True) }}">
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <h1 class="mb-3">{{ post.title }}</h1>
     <p class="text-muted">Oleh {{ post.author }} pada {{ post.created_at.strftime('%d %B %Y') }}</p>
-    
+
     {# TAMPILKAN KATEGORI/TAG DI DETAIL POSTINGAN #}
     {% if post.categories %}
         <div class="mb-3">
