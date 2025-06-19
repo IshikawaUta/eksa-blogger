@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
@@ -78,6 +78,14 @@ def logout():
     session.pop('username', None)
     flash('Anda telah logout.', 'info')
     return redirect(url_for('index'))
+
+@app.route('/robots.txt')
+def serve_robots():
+    return send_from_directory(app.static_folder, 'robots.txt', mimetype='text/plain')
+
+@app.route('/sitemap.xml')
+def serve_sitemap():
+    return send_from_directory(app.static_folder, 'sitemap.xml', mimetype='application/xml')
 
 # --- RUTE BLOG ---
 @app.route('/')
