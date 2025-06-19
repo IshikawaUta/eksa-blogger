@@ -27,13 +27,16 @@
                 <form class="d-flex me-3" action="{{ url_for('index') }}" method="GET">
                     <input class="form-control me-2" type="search" placeholder="Cari postingan..." aria-label="Search" name="q" value="{{ query if query }}">
                     <button class="btn btn-outline-light" type="submit">Cari</button>
-                </form>
+                </form><br>
 
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item me-2">
                         <button class="btn btn-sm btn-outline-light" id="theme-toggle">
                             <i class="fas fa-moon" id="theme-icon"></i>
                         </button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://co-dev-discussion.vercel.app/">Forum Dikusi</a>
                     </li>
                     {% if session.logged_in %}
                         <li class="nav-item">
