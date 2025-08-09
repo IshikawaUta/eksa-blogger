@@ -79,13 +79,33 @@ def logout():
     flash('Anda telah logout.', 'info')
     return redirect(url_for('index'))
 
-@app.route('/robots.txt')
-def serve_robots():
-    return send_from_directory(app.static_folder, 'robots.txt', mimetype='text/plain')
+# --- Rute Dinamis untuk SEO ---
 
-@app.route('/sitemap.xml')
-def serve_sitemap():
-    return send_from_directory(app.static_folder, 'sitemap.xml', mimetype='application/xml')
+@app.route('/robots.txt', methods=['GET'])
+def robots():
+    sitemap_url = url_for('sitemap', _external=True)
+    content = f"""User-agent: *
+Allow: /
+
+Sitemap: {sitemap_url}"""
+    return content, 200, {'Content-Type': 'text/plain'}
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    posts = posts_collection.find({}, {"_id": 1, "created_at": 1})
+    post_urls = [
+        {
+            "loc": url_for('post_detail', id=str(post['_id']), _external=True),
+            "lastmod": post['created_at'].strftime('%Y-%m-%dT%H:%M:%S%z') if post.get('created_at') else datetime.now().strftime('%Y-%m-%dT%H:%M:%S%z')
+        } for post in posts
+    ]
+    
+    static_urls = [
+        {"loc": url_for('index', _external=True), "lastmod": datetime.now().strftime('%Y-%m-%dT%H:%M:%S%z')}
+    ]
+    
+    return render_template('sitemap.xml', post_urls=post_urls, static_urls=static_urls), 200, {'Content-Type': 'application/xml'}
+
 
 # --- RUTE BLOG ---
 @app.route('/')

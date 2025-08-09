@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for url in static_urls %}
+    <url>
+        <loc>{{ url.loc }}</loc>
+        <lastmod>{{ url.lastmod }}</lastmod>
+    </url>
+    {% endfor %}
+    
+    {% for post in post_urls %}
+    <url>
+        <loc>{{ post.loc }}</loc>
+        <lastmod>{{ post.lastmod }}</lastmod>
+    </url>
+    {% endfor %}
+</urlset>
